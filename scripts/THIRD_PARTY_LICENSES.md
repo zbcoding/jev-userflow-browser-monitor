@@ -1,8 +1,11 @@
 # Third-party code
 
-`snapshot.js` is vendored verbatim from
-[browser-use/jev-ultrafast](https://github.com/browser-use/jev-ultrafast)
-(`jev_ultrafast/snapshot.js`), MIT licensed:
+Code from [browser-use/jev-ultrafast](https://github.com/browser-use/jev-ultrafast),
+MIT licensed:
+
+- `snapshot.js`: vendored verbatim from `jev_ultrafast/snapshot.js`.
+- `jev.mjs`: the `OPERATION_RULES` and `TARGET_RULES` prompt text, verbatim
+  from `jev_ultrafast/questions.py`.
 
 ```
 MIT License
@@ -28,6 +31,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-`jev.mjs` is original code written against TypeSafe's public
-`/v1/systemone` API; its question instructions are ported from
-`jev_ultrafast/questions.py`.
+The rest of `jev.mjs` (the click loop and its TypeSafe `/v1/systemone`
+request/response handling) is original code, adapted from the design of
+`jev_ultrafast/model.py`, under this repository's MIT license.
