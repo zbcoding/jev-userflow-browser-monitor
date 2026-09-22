@@ -1,0 +1,41 @@
+name: Flow check
+
+on:
+  schedule:
+    - cron: "17 9 * * *" # daily; off the hour to dodge scheduler pile-up
+  workflow_dispatch: {}
+
+jobs:
+  flow-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: qa/flow_check
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: Run flow check
+        working-directory: qa/flow_check
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          QA_TEST_ACCOUNT_EMAIL: ${{ secrets.QA_TEST_ACCOUNT_EMAIL }}
+          QA_TEST_ACCOUNT_PASSWORD: ${{ secrets.QA_TEST_ACCOUNT_PASSWORD }}
+          TARGET_BASE_URL: https://example.com
+          TARGET_API_URL: https://api.example.com
+        run: node run.mjs
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flow-check-${{ github.run_id }}
+          path: qa/flow_check/qa-results/
+          retention-days: 14
