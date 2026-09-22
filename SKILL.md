@@ -14,6 +14,7 @@ a GitHub repo with Actions, and a test user the check can sign in as.
 |---|---|---|
 | `scripts/jev.mjs` | `runJevClickLoop(page, goal, {maxSteps, maxWaits, stopWhen})`: each step sends a DOM snapshot to TypeSafe's Jev model, which picks CLICK (and which element), SCROLL, WAIT, DONE, or BLOCKED; Playwright performs it | copy as-is |
 | `scripts/snapshot.js` | vendored from browser-use/jev-ultrafast (MIT); indexes visible interactive elements plus page text | copy as-is, with `THIRD_PARTY_LICENSES.md` |
+| `scripts/drag.mjs` | `dragBy(page, locator, dx, dy)`: drag via raw mouse down/move/up | copy as-is if the flow drags |
 | `templates/run.mjs` | site-agnostic harness: login, signed-in browser, flow, always-run cleanup, GHA annotations + job summary, failure screenshot | copy as-is |
 | `templates/site.example.mjs` | the site adapter: `login()`, `runSiteFlow()`, `cleanupTestData()` | rewrite as `site.mjs` |
 | `templates/flow-check.yml`, `package.json`, `.env.example` | workflow, deps, local env | adjust URLs/secrets |
@@ -25,8 +26,8 @@ add a small fixture file if the flow uploads one. Ignore `.env` and
 ## Designing the flow
 
 - **Hybrid driver.** Script with plain Playwright whatever the click loop
-  can't do: file inputs (`setInputFiles`), typing, drags (raw `page.mouse`
-  down/move/up — apps with custom drag handlers ignore `.dragTo()`). Hand the
+  can't do: file inputs (`setInputFiles`), typing, drags (`dragBy` from
+  `drag.mjs` — apps with custom drag handlers ignore `.dragTo()`). Hand the
   click-only stretches (buttons, menus, dialogs, checkboxes, confirmations)
   to `runJevClickLoop` on the same page; those keep working through label and
   markup changes a selector script would miss.
