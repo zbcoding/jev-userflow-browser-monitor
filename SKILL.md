@@ -1,9 +1,9 @@
 ---
-name: prod-flow-check
+name: jev-flow-check
 description: Build or maintain a scheduled regression check that drives a real user flow on a production website or web app (sign in, click through the UI, create something, verify it, clean up) with Playwright plus TypeSafe's Jev model as a click-by-choice agent, run from GitHub Actions under a dedicated QA account. Use when asked for AI-agent / browser-use style userflow testing, a daily or weekly production smoke check, or to debug or rotate credentials for an existing one.
 ---
 
-# prod-flow-check
+# jev-flow-check
 
 Requirements: Node 22+, Playwright, a TypeSafe API key (console.typesafe.ai),
 a GitHub repo with Actions, and a test user the check can sign in as.
